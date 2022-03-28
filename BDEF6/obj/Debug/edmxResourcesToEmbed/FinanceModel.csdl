@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FinanceDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Operation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Value" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="TypeOfOperationId" Type="Int32" Nullable="false" />
+    <Property Name="DateOfOperation" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="TypeOfOperation" Relationship="Self.FK_Operation" FromRole="Operation" ToRole="TypeOfOperation" />
+  </EntityType>
+  <EntityType Name="TypeOfOperation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Operation" Relationship="Self.FK_Operation" FromRole="TypeOfOperation" ToRole="Operation" />
+  </EntityType>
+  <Association Name="FK_Operation">
+    <End Role="TypeOfOperation" Type="Self.TypeOfOperation" Multiplicity="1" />
+    <End Role="Operation" Type="Self.Operation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TypeOfOperation">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Operation">
+        <PropertyRef Name="TypeOfOperationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FinanceDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Operation" EntityType="Self.Operation" />
+    <EntitySet Name="TypeOfOperation" EntityType="Self.TypeOfOperation" />
+    <AssociationSet Name="FK_Operation" Association="Self.FK_Operation">
+      <End Role="TypeOfOperation" EntitySet="TypeOfOperation" />
+      <End Role="Operation" EntitySet="Operation" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

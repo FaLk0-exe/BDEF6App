@@ -1,0 +1,14 @@
+﻿CREATE TABLE OperationType(
+Id INT NOT NULL PRIMARY KEY,
+[Name] NVARCHAR(20) NOT NULL);
+
+INSERT INTO OperationType VALUES(1,'Cost'),(2,'Admission');
+
+CREATE TABLE Operation(
+Id INT NOT NULL PRIMARY KEY,
+OperationTypeId INT NOT NULL,
+[Name] NVARCHAR(100) NOT NULL,
+[Value] DECIMAL NOT NULL,
+OperationTime DATETIME NOT NULL,
+FOREIGN KEY(OperationTypeId) REFERENCES OperationType(Id)
+);
